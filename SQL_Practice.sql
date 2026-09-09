@@ -1,7 +1,8 @@
 
-DROP DATABASE IF EXISTS sql_assessment_practice;
-CREATE DATABASE sql_assessment_practice;
-USE sql_assessment_practice;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS employees;
 
 -- 1. Employees
 CREATE TABLE employees (
