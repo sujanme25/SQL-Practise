@@ -1,5 +1,3 @@
--- SQL Assessment Practice Dataset
--- MySQL-compatible setup for Q1-Q25
 
 DROP DATABASE IF EXISTS sql_assessment_practice;
 CREATE DATABASE sql_assessment_practice;
