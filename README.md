@@ -110,7 +110,55 @@ By completing these exercises, you will learn how to:
 - Apply SQL to real-world business scenarios
 
 ---
-
+## Advanced Concepts (Q101-Q120)
+ 
+The final section of the repository focuses on advanced SQL analytics and interview-level problem solving. These exercises are designed to strengthen analytical thinking, query optimisation, and real-world business reporting skills.
+ 
+### Topics Covered
+ 
+- Recursive Common Table Expressions (Recursive CTEs)
+- Organisational Hierarchies and Reporting Structures
+- Median and Percentile Calculations
+- PERCENT_RANK()
+- NTILE()
+- Advanced Window Functions
+- ROW_NUMBER()
+- RANK()
+- DENSE_RANK()
+- LAG() and LEAD()
+- Running Totals and Cumulative Calculations
+- Moving Averages
+- Pareto (80/20) Analysis
+- Revenue Contribution Analysis
+- Customer Segmentation (RFM Analysis)
+- Gaps and Islands Problems
+- Consecutive Date and Month Streak Analysis
+- Relational Division using EXISTS and NOT EXISTS
+- Set Comparison using EXCEPT
+- Recursive Calendar Generation
+- Time-Series Analysis
+- Customer Behaviour Analytics
+- Product Performance Analytics
+- Category Revenue Analytics
+- Advanced Multi-Stage CTE Design
+- Business Intelligence and Executive Reporting
+ 
+### Real-World Scenarios
+ 
+Questions 101–120 include practical business problems such as:
+ 
+- Determining manager and employee hierarchies
+- Identifying top revenue contributors
+- Detecting customer purchasing patterns
+- Measuring month-over-month growth
+- Calculating moving averages
+- Finding purchasing gaps and customer inactivity periods
+- Performing Pareto revenue analysis
+- Building comprehensive customer analytics dashboards
+- Developing RFM customer segmentation models
+- Creating executive-level reporting datasets
+ 
+These challenges are intended for learners preparing for advanced SQL interviews, data analyst roles, business intelligence positions, and real-world reporting environments.
 ## Recommended Learning Path
 
 1. Complete Questions 1–25
