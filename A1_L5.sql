@@ -1,5 +1,3 @@
--- https://github.com/Imranshariff42/SQL-assessment-practise/blob/main/assessment_questions.md
-
 --Q18 — Top-selling product — Find the top-selling product in each category based on total sales amount.
 --Think about: JOIN fi GROUP BY fi SUM fi RANK / ROW_NUMBER fi PARTITION BY.
 SELECT
