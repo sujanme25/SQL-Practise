@@ -35,7 +35,7 @@ SELECT
 p.product_name,
 p.category,
 SUM(o.amount) AS total_sale,
-ROW_NUMBER() OVER (
+ROW_NUMBER() OVER (PARTITION BY
  p.category
 ORDER BY SUM(o.amount) DESC --Not ORDER BY we have used PARTITION BY because we want to rank inside each category.
 ) AS top_seller
@@ -178,7 +178,7 @@ FROM category_revenue
 WHERE total_revenue = (
 SELECT MAX(total_revenue)
 FROM category_revenue
-)
+);
 --Show only categories whose revenue is greater than 10,000
 SELECT
 	p.category,
@@ -260,23 +260,3 @@ salary
 FROM ranked_salary
 WHERE salary_rank = 2;
 
---OR
-SELECT
-employee_name,
-department,
-salary
-FROM employees e
-WHERE salary =
-(
-SELECT MAX(salary)
-FROM employees
-WHERE department = e.department
-AND salary <
-(
-SELECT MAX(salary)
-FROM employees
-WHERE department = e.department
-)
-);
-FROM employees
-GROUP BY salary
