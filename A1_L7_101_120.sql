@@ -1,4 +1,9 @@
 --Q101 - Find employees whose salary is above their department average but below the highest salary in their department.
+--
+-- Step 1: Calculate each department's average and maximum salary with window functions.
+-- Step 2: Keep employee detail without collapsing rows through GROUP BY.
+-- Step 3: Filter employees above the department average but below the department maximum.
+--
 
 WITH employee_salary_analysis AS (
     SELECT
@@ -28,6 +33,11 @@ ORDER BY department, salary DESC;
 
 
 --Q102 - Find the median salary in each department.
+--
+-- Step 1: Sort salaries within each department and assign a row number.
+-- Step 2: Count employees in each department to locate the middle row or rows.
+-- Step 3: Average the middle value(s), which handles both odd and even department sizes.
+--
 
 WITH ranked_salaries AS (
     SELECT
@@ -55,6 +65,11 @@ ORDER BY department;
 
 
 --Q103 - Find each manager's direct and indirect reports using a recursive CTE.
+--
+-- Step 1: The anchor query finds every direct employee-manager relationship.
+-- Step 2: The recursive query follows each report downward through additional hierarchy levels.
+-- Step 3: Return every direct and indirect report with its hierarchy depth.
+--
 
 WITH RECURSIVE organisation AS (
     SELECT
@@ -90,6 +105,11 @@ ORDER BY manager_id, hierarchy_level, report_id;
 
 
 --Q104 - Find the total number of direct and indirect reports for each manager.
+--
+-- Step 1: Build all direct manager-report relationships in the anchor query.
+-- Step 2: Recursively expand each manager's reporting tree.
+-- Step 3: Count distinct descendants for each manager to avoid duplicate report counts.
+--
 
 WITH RECURSIVE organisation AS (
     SELECT
@@ -120,6 +140,11 @@ ORDER BY total_reports DESC, manager_name;
 
 
 --Q105 - Find the salary percentile of every employee within their department.
+--
+-- Step 1: Partition employees by department.
+-- Step 2: Order salaries from low to high within each department.
+-- Step 3: Use PERCENT_RANK() and convert the result to a percentage.
+--
 
 SELECT
     employee_id,
@@ -138,6 +163,11 @@ ORDER BY department, salary DESC;
 
 
 --Q106 - Divide employees in each department into three salary groups using NTILE().
+--
+-- Step 1: Partition employees by department.
+-- Step 2: Sort salaries from highest to lowest.
+-- Step 3: Use NTILE(3) to distribute employees into three salary groups.
+--
 
 SELECT
     employee_id,
@@ -153,6 +183,11 @@ ORDER BY department, salary_group, salary DESC;
 
 
 --Q107 - Find customers whose spending increased with every successive order.
+--
+-- Step 1: Use LAG() to retrieve each customer's previous order amount.
+-- Step 2: Count orders that did not increase compared with the preceding order.
+-- Step 3: Return customers with multiple orders and zero non-increasing movements.
+--
 
 WITH customer_order_sequence AS (
     SELECT
@@ -194,6 +229,12 @@ ORDER BY c.customer_name;
 
 
 --Q108 - Find the longest gap in days between consecutive orders for each customer.
+--
+-- Step 1: Use LAG() to retrieve each customer's previous order date.
+-- Step 2: Calculate the day gap between consecutive orders with julianday().
+-- Step 3: Rank gaps from largest to smallest for each customer.
+-- Step 4: Return all longest-gap ties.
+--
 
 WITH order_sequence AS (
     SELECT
@@ -245,6 +286,11 @@ ORDER BY longest_gap_days DESC, c.customer_name;
 
 
 --Q109 - Find customers who purchased every product category available in the products table.
+--
+-- Step 1: Join customers to their purchased product categories.
+-- Step 2: Count distinct categories purchased by each customer.
+-- Step 3: Compare that count with the total number of categories available.
+--
 
 SELECT
     c.customer_id,
@@ -265,6 +311,11 @@ ORDER BY c.customer_name;
 
 
 --Q110 - Find customers who purchased every product in the Electronics category.
+--
+-- Step 1: Start with each customer.
+-- Step 2: Search for any Electronics product that the customer has not purchased.
+-- Step 3: Keep customers for whom no missing Electronics product exists.
+--
 
 SELECT
     c.customer_id,
@@ -285,6 +336,12 @@ ORDER BY c.customer_name;
 
 
 --Q111 - Find each customer's longest streak of consecutive months containing at least one order.
+--
+-- Step 1: Reduce orders to one row per customer and active month.
+-- Step 2: Convert each month to a continuous numeric value and assign row numbers.
+-- Step 3: Subtract row number from month number to identify consecutive-month islands.
+-- Step 4: Measure each streak, rank it per customer and return the longest streak.
+--
 
 WITH customer_months AS (
     SELECT DISTINCT
@@ -348,6 +405,11 @@ ORDER BY rs.streak_length DESC, c.customer_name;
 
 
 --Q112 - Find each customer's most frequently purchased product and return all tied products.
+--
+-- Step 1: Count how often each customer purchased each product.
+-- Step 2: Rank product counts within each customer.
+-- Step 3: Use RANK() so all tied favourite products are returned.
+--
 
 WITH customer_product_orders AS (
     SELECT
@@ -392,6 +454,11 @@ ORDER BY customer_id, product_name;
 
 
 --Q113 - Compare each product's revenue with its category's average product revenue.
+--
+-- Step 1: Calculate total revenue for every product, including zero-revenue products.
+-- Step 2: Calculate average product revenue within each category with a window function.
+-- Step 3: Show each product's difference from its category average.
+--
 
 WITH product_revenue AS (
     SELECT
@@ -434,6 +501,12 @@ ORDER BY category, total_revenue DESC;
 
 
 --Q114 - Find products required to reach the first 80% of revenue within each category.
+--
+-- Step 1: Calculate revenue for each sold product.
+-- Step 2: Order products by revenue within category and compute cumulative revenue.
+-- Step 3: Calculate total category revenue and the prior cumulative boundary.
+-- Step 4: Include products needed to cross the 80 percent revenue threshold.
+--
 
 WITH product_revenue AS (
     SELECT
@@ -490,6 +563,11 @@ ORDER BY category, total_revenue DESC;
 
 
 --Q115 - Find months where sales were higher than both the previous and following months.
+--
+-- Step 1: Aggregate orders into monthly sales totals.
+-- Step 2: Use LAG() and LEAD() to retrieve adjacent-month totals.
+-- Step 3: Keep months higher than both their previous and following months.
+--
 
 WITH monthly_sales AS (
     SELECT
@@ -522,6 +600,12 @@ ORDER BY sales_month;
 
 
 --Q116 - Generate a complete monthly calendar and include months with zero sales.
+--
+-- Step 1: Generate every month between the earliest and latest order using a recursive CTE.
+-- Step 2: Aggregate the real orders by month.
+-- Step 3: LEFT JOIN the calendar to sales so missing months remain visible.
+-- Step 4: Replace missing counts and sales with zero.
+--
 
 WITH RECURSIVE month_calendar AS (
     SELECT
@@ -560,6 +644,11 @@ ORDER BY mc.month_start;
 
 
 --Q117 - Calculate a three-month moving average of monthly sales.
+--
+-- Step 1: Generate a complete month calendar so missing months are represented.
+-- Step 2: Aggregate sales and replace missing monthly totals with zero.
+-- Step 3: Average the current month and two preceding rows to create a three-month moving average.
+--
 
 WITH RECURSIVE month_calendar AS (
     SELECT
@@ -610,6 +699,12 @@ ORDER BY month_start;
 
 
 --Q118 - Find the smallest group of highest-spending customers required to reach at least 50% of total revenue.
+--
+-- Step 1: Calculate total spending for each customer.
+-- Step 2: Sort customers by spending and calculate cumulative and overall revenue.
+-- Step 3: Calculate the cumulative amount before each customer.
+-- Step 4: Keep the smallest leading group needed to reach or cross 50 percent.
+--
 
 WITH customer_spending AS (
     SELECT
@@ -657,6 +752,12 @@ ORDER BY total_spending DESC, customer_id;
 
 
 --Q119 - Find pairs of customers who purchased exactly the same distinct set of products.
+--
+-- Step 1: Create distinct customer-product pairs.
+-- Step 2: Generate each unique pair of customers with a CROSS JOIN.
+-- Step 3: Use EXCEPT in both directions to detect any product-set difference.
+-- Step 4: Return pairs for which neither customer has a product missing from the other set.
+--
 
 WITH customer_products AS (
     SELECT DISTINCT
@@ -724,6 +825,13 @@ ORDER BY customer_1_id, customer_2_id;
 
 
 --Q120 - Build an RFM-style customer segmentation report.
+--
+-- Step 1: Use the latest order date in the data as the recency reference date.
+-- Step 2: Calculate recency, frequency and monetary metrics for every customer.
+-- Step 3: Score active customers into thirds with NTILE(3).
+-- Step 4: Reattach customers with no orders and assign zero scores.
+-- Step 5: Combine the scores and classify each customer into an RFM segment.
+--
 
 WITH reference_date AS (
     SELECT
